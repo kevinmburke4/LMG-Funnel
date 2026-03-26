@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Logical Media Group — Marketing Funnel</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f4f5f7;color:#1a1a1a;font-size:14px;min-height:100vh}
+.header{background:#fff;border-bottom:1px solid #e5e7eb;padding:16px 32px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:20px;font-weight:700;letter-spacing:-0.5px;color:#1a1a1a}
+.logo span{color:#E84B2D}
+.header-sub{font-size:12px;color:#888;margin-top:2px}
+.header-right{font-size:11px;color:#aaa;text-align:right;line-height:1.6}
+.container{max-width:940px;margin:0 auto;padding:24px 20px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;align-items:center}
+.tab{padding:7px 18px;border:1.5px solid #ddd;border-radius:24px;background:#fff;cursor:pointer;font-size:13px;color:#555;font-weight:500;transition:all .15s}
+.tab:hover{border-color:#E84B2D;color:#E84B2D}
+.tab.active{background:#E84B2D;border-color:#E84B2D;color:#fff}
+.btn-row{margin-left:auto;display:flex;gap:8px}
+.btn{padding:7px 16px;border-radius:24px;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;border:1.5px solid #3B8BD4;color:#3B8BD4;background:#fff}
+.btn:hover{background:#ebf5ff}
+.view-header{margin-bottom:20px;padding:16px 20px;border:1px solid #e5e7eb;border-radius:12px;background:#fff}
+.view-header h2{font-size:16px;font-weight:600;margin-bottom:5px}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.badge{font-size:11px;padding:3px 12px;border-radius:12px;font-weight:600}
+.b-blue{background:#dbeafe;color:#1e40af}
+.b-orange{background:#fef3c7;color:#92400e}
+.b-green{background:#d1fae5;color:#065f46}
+.b-red{background:#fee2e2;color:#991b1b}
+.edit-hint{font-size:12px;color:#aaa;margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.edit-hint span{background:#fffbe6;border:1px solid #fde68a;border-radius:4px;padding:2px 8px;color:#92400e;font-size:11px;font-weight:500}
+.funnel-stage-row{display:flex;justify-content:center;margin-bottom:5px}
+.funnel-bar{border-radius:10px;overflow:hidden;cursor:pointer;transition:filter .15s;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.funnel-bar:hover{filter:brightness(.96)}
+.bar-inner{display:flex;align-items:center;padding:12px 20px;gap:14px;min-height:52px}
+.bar-label{font-weight:700;font-size:14px;color:#fff;min-width:95px;flex-shrink:0}
+.bar-desc{font-size:12px;color:rgba(255,255,255,.9);flex:1;outline:none;border-radius:4px;padding:2px 5px}
+.bar-desc:focus{background:rgba(255,255,255,.2);box-shadow:0 0 0 1.5px rgba(255,255,255,.6)}
+.bar-desc:hover:not(:focus){background:rgba(255,255,255,.12)}
+.bar-toggle{font-size:12px;color:rgba(255,255,255,.75);margin-left:auto;white-space:nowrap;user-select:none;flex-shrink:0}
+.connector{width:2px;background:#e5e7eb;height:5px;margin:0 auto;margin-bottom:5px}
+.detail{display:none;background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:16px 20px;margin-bottom:5px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.detail.open{display:block}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.detail-col h4{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#aaa;margin-bottom:8px;font-weight:700}
+.list-item{display:flex;align-items:flex-start;gap:6px;margin-bottom:5px}
+.bullet{color:#ccc;margin-top:3px;flex-shrink:0}
+.editable{font-size:13px;line-height:1.6;color:#333;flex:1;outline:none;border-radius:3px;padding:1px 4px;cursor:text;min-width:0;word-break:break-word}
+.editable:focus{background:#fffbe6;box-shadow:0 0 0 1.5px #EF9F27}
+.editable:hover:not(:focus){background:#f9f9f9}
+.del-btn{font-size:10px;color:#ddd;background:none;border:none;cursor:pointer;padding:2px 4px;flex-shrink:0;margin-top:3px;border-radius:3px;line-height:1;font-weight:600}
+.del-btn:hover{color:#e24b4a;background:#fef2f2}
+.add-btn{font-size:12px;color:#3B8BD4;background:none;border:1.5px dashed #93c5fd;border-radius:5px;padding:3px 10px;cursor:pointer;margin-top:5px;display:inline-flex;align-items:center;gap:4px}
+.add-btn:hover{background:#ebf5ff}
+.content-blocks{display:flex;flex-direction:column;gap:10px}
+.msg-block{padding:14px 16px;border-radius:8px;border-left:4px solid;background:#fafafa}
+.msg-block h4{font-size:10px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;font-weight:700}
+.field-text{font-size:13px;line-height:1.65;color:#333;outline:none;border-radius:4px;padding:2px 5px;display:block;width:100%}
+.field-text:focus{background:#fffbe6;box-shadow:0 0 0 1.5px #EF9F27}
+.field-text:hover:not(:focus){background:#f5f5f5}
+.creative-block{padding:14px 16px;border-radius:8px;border-left:4px solid #E8C84B;background:#fffdf0}
+.creative-block h4{font-size:10px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;font-weight:700;color:#92400e}
+.creative-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.creative-sub{background:#fff;border:1px solid #fde68a;border-radius:6px;padding:10px 12px}
+.creative-sub h5{font-size:9px;text-transform:uppercase;letter-spacing:.05em;color:#b45309;margin-bottom:6px;font-weight:700}
+.toast{position:fixed;bottom:20px;right:20px;background:#1a1a1a;color:#fff;padding:9px 18px;border-radius:8px;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.toast.show{opacity:1}
+footer{text-align:center;padding:24px;font-size:12px;color:#bbb}
+@media(max-width:620px){.detail-grid{grid-template-columns:1fr}.creative-grid{grid-template-columns:1fr}.btn-row{margin-left:0;margin-top:8px}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="logo">Logical Media Group</div>
+    <div class="header-sub">Marketing Funnel — Interactive Strategy Document</div>
+  </div>
+  <div class="header-right">Click any text to edit<br>Export JSON to save changes</div>
+</div>
+
+<div class="container">
+  <div class="tabs" id="tabs"></div>
+  <div id="view-header" class="view-header" style="display:none"></div>
+  <p class="edit-hint"><span>Editable</span> Click any text, bullet, or message to edit inline. Use + to add bullets, X to remove.</p>
+  <div id="funnel"></div>
+</div>
+
+<footer>Logical Media Group Marketing Funnel · Export JSON to save your edits</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+const STAGES=[
+  {key:'awareness',  label:'Awareness',  color:'#7F77DD', w:100},
+  {key:'interest',   label:'Interest',   color:'#1D9E75', w:84},
+  {key:'intent',     label:'Intent',     color:'#EF9F27', w:68},
+  {key:'evaluation', label:'Evaluation', color:'#D85A30', w:52},
+  {key:'conversion', label:'Conversion', color:'#3B8BD4', w:38},
+]
+
+const INIT={
+  template:{label:'Master Template',header:null,stages:{
+    awareness:{
+      desc:'Build brand recognition and reach the right audience',
+      tactics:['Paid search and paid social brand awareness campaigns','SEO content and thought leadership articles','Referral network and PR activation'],
+      targeting:['CMOs, Marketing Directors, and Founders at growth-stage companies','Companies with lean marketing teams looking for agency support','Intent signals: actively researching agencies on Google, Clutch, or LinkedIn'],
+      msg:'Most companies know they need better marketing. What they need is a partner who will roll up their sleeves, dig into the data, and do the work instead of hiding behind buzzwords and dashboards.',
+      creative_content:'Short-form video (15 to 30 seconds) introducing the team and a key result. Static social ads with a bold proof point or provocative question. The goal is to stop the scroll and plant the name.',
+      creative_tone:'Data-forward but human. Clean layouts, confident headlines, no corporate gloss.',
+      creative_formats:'Short-form video, bold static ads, LinkedIn carousels',
+    },
+    interest:{
+      desc:'Educate prospects on what makes Logical different',
+      tactics:['Retargeting campaigns with channel-specific content offers','Email nurture sequence (4 to 6 touches) with case studies and guides','Gated content: audits, playbooks, and channel breakdowns'],
+      targeting:['Website visitors and social engagers who have seen awareness content','Email list from content downloads and event contacts','Contacts who opened 2 or more nurture emails'],
+      msg:'There is a difference between an agency that runs your ads and one that actually understands your business. Logical becomes an extension of your team, not another vendor you have to manage.',
+      creative_content:'Case study content in carousel or article format showing a real client journey. Mid-length video (30 to 60 seconds) walking through a channel result. Gated guide or checklist behind a simple form. The goal is to build enough trust to earn a conversation.',
+      creative_tone:'Proof-driven and approachable. Show the process. Use real client results. Avoid stock photography.',
+      creative_formats:'Case study carousels, mid-length video, gated guides behind a lead form',
+    },
+    intent:{
+      desc:'Convert interest into a discovery conversation',
+      tactics:['Free marketing audit CTA across high-intent pages','Retargeting to contacts who visited pricing or contact pages','Vertical-matched case study email to warm prospects'],
+      targeting:['Prospects who visited key pages 2 or more times','Leads with 3 or more email opens or content downloads','CRM contacts with a high engagement score'],
+      msg:'You have probably worked with an agency that felt like a black box. Logical is built differently. Small enough to care, experienced enough to compete with anyone.',
+      creative_content:'Testimonial content, short client quote videos (30 seconds), and social proof ads with review ratings. Free audit offer ad with a single clear CTA. The goal is to reduce friction and make the first conversation feel easy.',
+      creative_tone:'Confident and direct. Social proof does the heavy lifting here. Real quotes, real numbers, real team faces.',
+      creative_formats:'Client quote video, social proof static ads, retargeting with a low-friction audit CTA',
+    },
+    evaluation:{
+      desc:'Win the proposal with process transparency and proof',
+      tactics:['Custom audit delivery with a 90-day roadmap','Reference calls with clients in a comparable vertical','Proposal presentation with team introduction and KPI commitments'],
+      targeting:['Active proposals in CRM','Multi-stakeholder accounts requiring sign-off from marketing and finance','Prospects comparing 2 or 3 agencies simultaneously'],
+      msg:'Our proposals are not templates. They are built around your business, your channels, and your goals. You will meet your team, see your 90-day plan, and know exactly what success looks like before you sign.',
+      creative_content:'Long-form or gated content: a detailed case study PDF, a channel audit report, or a recorded strategy walkthrough behind a form. This is where depth matters. The prospect is doing due diligence and the content should match that level of seriousness.',
+      creative_tone:'Polished and structured. The proposal is a product sample. Clean data visualization, branded audit report, professional but warm.',
+      creative_formats:'Case study PDF behind a form, recorded strategy walkthrough (gated), branded proposal deck',
+    },
+    conversion:{
+      desc:'Close and onboard with speed and confidence',
+      tactics:['Kickoff meeting scheduled within 5 business days of signing','30-day sprint plan delivered at kickoff','Account access and reporting cadence established in week one'],
+      targeting:['Signed contracts in onboarding','Internal champion identified and aligned','All key stakeholders introduced'],
+      msg:'From the moment you sign, the clock starts. Kickoff in 5 days, account access requested today, 30-day sprint plan on the table before the first invoice.',
+      creative_content:'Operational and onboarding content: a welcome deck, a personalized video from the account lead, and a day-one email that outlines exactly what happens next. The goal is to make the client feel the energy of the partnership from the first week.',
+      creative_tone:'Warm, organized, and confidence-building. Internal-facing creative that reinforces the decision to hire Logical.',
+      creative_formats:'Welcome deck (PDF or slides), personalized Loom video from account lead, onboarding email sequence',
+    },
+  }},
+
+  b2b:{label:'B2B',header:{
+    title:'B2B — Companies Seeking a Full-Service Marketing Partner',
+    desc:'B2B prospects are growth-stage companies with lean marketing teams and big ambitions. They are often frustrated with their current agency or trying to do too much in-house. Decision makers are CMOs, Marketing Directors, and Founders. The sales cycle runs 2 to 6 weeks and trust in process and proof are the primary purchase drivers. This is where Logical is currently performing well.',
+    badges:[{t:'Growth-stage companies',c:'b-blue'},{t:'Lean marketing teams',c:'b-orange'},{t:'High LTV and relationship-driven',c:'b-green'}],
+  },stages:{
+    awareness:{
+      desc:'Reach marketing leaders at growth-stage B2B companies',
+      tactics:['LinkedIn paid targeting CMOs, Marketing Directors, and Founders by company size','Google Search for agency queries like "full service digital marketing agency" or "B2B PPC agency"','Speaking at Chicago business and marketing events'],
+      targeting:['CMOs, VPs of Marketing, and Founders at companies with 10 to 200 employees','Companies without a dedicated in-house marketing team','Brands spending $10k to $100k per month on marketing and ready for an agency'],
+      msg:'If your marketing feels like it is running on gut feel and crossed fingers, you are not alone. Logical works with lean marketing teams who need the expertise of a big agency with the hustle of a startup.',
+      creative_content:'Short-form LinkedIn video (15 seconds) introducing the team and a key proof point. Bold static ad with a provocative question like "How much budget did you waste last quarter?" The goal is recognition and a planted name among the right decision makers.',
+      creative_tone:'Peer-to-peer. Speak to the frustration of doing marketing alone. Chicago-tough, no-fluff energy.',
+      creative_formats:'LinkedIn short-form video (15 seconds), bold static awareness ads, LinkedIn single image with a data point',
+    },
+    interest:{
+      desc:'Nurture with proof of process and channel expertise',
+      tactics:['Email nurture covering paid search, SEO, social, and email marketing one channel at a time','Gated asset: a guide to agency partnerships for lean marketing teams','Free channel audit offer (paid search or SEO)'],
+      targeting:['LinkedIn ad engagers and video viewers','Website visitors to services and case study pages','Email list from content downloads and event contacts'],
+      msg:'You do not need another agency pitching you dashboards. You need someone who can look at your Google Ads account, tell you exactly what is wrong, and fix it. That is what we do in week one.',
+      creative_content:'Process-forward carousel showing how Logical approaches a channel audit. Mid-length video (30 to 60 seconds) walking through a real account problem and the fix. Email with subject line "What we found in 5 minutes of looking at your account." The goal is to show depth before the prospect asks for it.',
+      creative_tone:'Process-forward. Show the methodology. Use data screenshots blurred for privacy. Real team photos over stock.',
+      creative_formats:'LinkedIn process carousel, short audit walkthrough video (30 to 60 seconds), plain-text nurture email with a specific finding',
+    },
+    intent:{
+      desc:'Convert interest into a discovery conversation',
+      tactics:['Free marketing audit CTA across all high-intent pages','LinkedIn InMail from the account team to warm prospects','Case study email matched to the prospect\'s vertical'],
+      targeting:['Prospects who visited the contact or pricing page 2 or more times','Leads who opened 3 or more nurture emails','CRM contacts scored at 60 or above based on engagement'],
+      msg:'We have worked with companies exactly like yours. Lean team, ambitious goals, underwhelmed by their last agency. The first step is a no-pressure audit. We will show you what we see before you decide anything.',
+      creative_content:'Testimonial ad with a short client quote (30 seconds or less). Free audit offer with a single CTA and a low-friction landing page. Retargeting creative that says "You have been thinking about it. Let\'s just talk." The goal is to remove hesitation and make the first step feel small.',
+      creative_tone:'Direct and action-oriented. Remove friction. The creative job is to make booking a call feel easy and low-risk.',
+      creative_formats:'Short client quote video (under 30 seconds), retargeting static with a single CTA, low-friction landing page for the audit offer',
+    },
+    evaluation:{
+      desc:'Win the proposal with process transparency and client proof',
+      tactics:['Discovery call covering business goals and current channel performance','Custom audit delivery followed by a 90-day roadmap presentation','Reference call matched to the prospect\'s industry'],
+      targeting:['Active proposals in CRM','Multi-stakeholder sign-off required from CMO and finance or CEO','Prospects comparing 2 or 3 agencies at the same time'],
+      msg:'Our proposals are not templates. They are built around your business, your channels, and your goals. You will meet your team, see your 90-day plan, and know exactly what success looks like before you sign.',
+      creative_content:'A detailed case study PDF or gated recorded walkthrough of a comparable client result. The channel audit report with annotated screenshots. A short "meet your team" video (60 to 90 seconds). This is due-diligence territory and the content needs to match that level of seriousness.',
+      creative_tone:'Polished and structured. The proposal is a product sample. Design quality signals capability.',
+      creative_formats:'Gated case study PDF, annotated audit report, short team intro video (60 to 90 seconds)',
+    },
+    conversion:{
+      desc:'Fast organized kickoff that builds immediate confidence',
+      tactics:['Kickoff meeting within 5 business days of signing','30-day sprint plan delivered at kickoff with clear KPIs','Weekly reporting cadence established and shared from day one'],
+      targeting:['Signed contracts in onboarding','Internal champion confirmed and briefed','All key stakeholders identified and introduced to the Logical team'],
+      msg:'Kickoff is in 5 days. Account access requests are in your inbox today. Your 30-day plan lands at the kickoff call. We move fast because your competitors are not waiting.',
+      creative_content:'Onboarding content designed to reinforce the decision: a personalized welcome email from the account lead, a Loom walkthrough of what happens in week one, and a branded onboarding checklist. The goal is to make the client feel like they made the right call from the moment they sign.',
+      creative_tone:'Organized and energetic. Make the client feel the momentum of the partnership from day one.',
+      creative_formats:'Personalized account lead email, Loom onboarding walkthrough, branded onboarding checklist PDF',
+    },
+  }},
+
+  b2c:{label:'B2C',header:{
+    title:'B2C — Consumer Brands Seeking Full-Service Digital Marketing',
+    desc:'B2C prospects are consumer-facing brands that need creative production, channel execution, and performance marketing across paid search, paid social, Amazon, SEO, and email. A key challenge in this segment is being able to show prospects what the full creative customer journey looks like from awareness through to sale. Decision makers are CMOs, Brand Managers, and ecommerce leads. This is an area of growth opportunity for Logical.',
+    badges:[{t:'Ecommerce, CPG and retail brands',c:'b-blue'},{t:'Multi-channel execution',c:'b-orange'},{t:'Creative and performance combined',c:'b-green'},{t:'Growth opportunity',c:'b-red'}],
+  },stages:{
+    awareness:{
+      desc:'Reach brand and ecommerce leaders at consumer companies',
+      tactics:['Meta and Instagram paid targeting Brand Managers, CMOs, and ecommerce Directors by industry','Google Search for terms like "ecommerce marketing agency" or "CPG digital agency"','Trade press and ecommerce conference presence (ShopTalk, eTail)'],
+      targeting:['Brand Managers, CMOs, and ecommerce Directors at consumer brands','Companies selling direct-to-consumer or on Amazon','CPG brands with $2M to $50M in annual revenue looking to scale'],
+      msg:'Scaling a consumer brand takes more than a good product. It takes a team that knows how to make every channel work together. Paid search, social, Amazon, email: Logical runs all of it, and it all talks to each other.',
+      creative_content:'Short-form video (6 to 15 seconds) showing a fast product-to-result story. High energy, visually rich, brand-forward. Think fast cuts, bold text overlays, and a single memorable stat or outcome. This is pure awareness content: the goal is to plant the brand name with the right marketing leaders.',
+      creative_tone:'Bold, brand-forward, and visually rich. Consumer brands expect creative that stops the scroll. High energy and aspirational but grounded in performance numbers.',
+      creative_formats:'Short-form video (6 to 15 seconds), bold static with one key stat, Instagram or Meta story ad',
+    },
+    interest:{
+      desc:'Show multi-channel expertise and the full creative journey',
+      tactics:['Retargeting with content showing a consumer brand journey from awareness to conversion','Email nurture: a multi-channel playbook for consumer brands','Gated content: a guide to scaling a consumer brand across paid search, social, and Amazon'],
+      targeting:['Website visitors to case study and paid social and Amazon pages','Email downloaders of consumer brand content','Social video viewers at 50 percent or more completion'],
+      msg:'We have scaled consumer brands from early-stage to multi-million in annual digital revenue. Not by doing one thing well, but by making paid search, social, Amazon, and email work as one system instead of four separate efforts.',
+      creative_content:'A brand journey carousel or mid-length video (30 to 60 seconds) showing the full path from awareness ad to purchase: what the ad looked like, what the landing page did, how retargeting closed the loop, and what the email follow-up captured. This content directly addresses the challenge of showing what the creative customer journey looks like end to end.',
+      creative_tone:'Results-first and visually energetic. Show the before and after of channel performance. Creative quality builds credibility with brand-side marketers.',
+      creative_formats:'Full customer journey carousel (awareness to purchase), mid-length brand story video (30 to 60 seconds), gated multi-channel playbook',
+    },
+    intent:{
+      desc:'Drive to a free audit or strategy conversation',
+      tactics:['Free paid social or Amazon audit CTA on high-intent pages','Meta lead gen ad with instant form: "Get your free channel audit"','Vertical-matched content email (a CPG prospect gets a CPG-specific example)'],
+      targeting:['Prospects visiting the contact or Amazon or paid social pages 2 or more times','Email list with 3 or more nurture email opens','Meta and LinkedIn retargeting of case study page visitors'],
+      msg:'A free audit is not a sales call. It is a look at what is actually happening in your account. We will find the gaps, tell you what we see, and let the work speak for itself.',
+      creative_content:'A low-friction offer ad that answers the question "what do I get?" clearly and quickly. Think a simple visual of the audit deliverable with a single bold CTA. Retargeting creative can be more direct: "Still thinking it over? Here is what other brands got from their free audit." Keep it short and easy to act on.',
+      creative_tone:'Low-friction and benefit-led. The ask is small. Make it feel like a no-brainer, confident and specific with no pressure.',
+      creative_formats:'Audit deliverable explainer graphic, retargeting static with a single CTA, Meta instant lead form',
+    },
+    evaluation:{
+      desc:'Win the pitch with channel depth and a full creative journey map',
+      tactics:['Discovery call covering brand goals, current channel mix, and creative pipeline','Custom channel audit with a 90-day multi-channel roadmap and budget allocation','Proposal with creative direction and a full customer journey map included'],
+      targeting:['Active B2C proposals in CRM','Multi-stakeholder sign-off from CMO, finance, and brand lead','Brands comparing agencies or considering bringing work in-house'],
+      msg:'Our proposal for your brand will show you exactly how paid search, social, Amazon, and email work together, with budget allocation, channel KPIs, and creative direction included. Not a template. Built for you.',
+      creative_content:'The most important content at this stage is a gated or shared deep-dive: a full creative customer journey map showing what content runs at each stage of the funnel for a brand like theirs, from the first awareness video through to the post-purchase email. This directly addresses the B2C gap of not being able to visualize the end-to-end journey. Pair it with the channel audit report and a brand-specific creative mood board.',
+      creative_tone:'High polish and brand-aware. The proposal should feel like it was made for their brand. Include creative mockups where possible.',
+      creative_formats:'Gated creative customer journey map (PDF or interactive), channel audit report, brand-specific creative mood board, proposal deck with creative direction slides',
+    },
+    conversion:{
+      desc:'Onboard fast and show value in the first 30 days',
+      tactics:['Account access (Meta, Google, Amazon, GA4) within 48 hours of signing','Creative brief completed and first campaign live within 14 days','First 30-day performance report with channel-by-channel results'],
+      targeting:['Signed contracts in onboarding','Creative assets requested and in production','All ad accounts accessed and audited'],
+      msg:'First campaign live in 14 days. First report in 30. We do not do slow onboards. Your brand has been waiting long enough. By day 30 you will have live campaigns, clean data, and a clear view of what is working.',
+      creative_content:'Onboarding content that shows the brand what the first month will look like: a campaign timeline, a creative brief template completed together with the Logical team, and a day-one email that outlines exactly what happens in week one. The goal is to make the energy of the partnership tangible from the first touchpoint.',
+      creative_tone:'Momentum-building and brand-aligned. Make the client feel the energy of working with Logical from week one.',
+      creative_formats:'Campaign timeline visual, co-created creative brief template, day-one email from account lead, week-one Loom walkthrough',
+    },
+  }},
+}
+
+let DATA=JSON.parse(JSON.stringify(INIT))
+let active='template'
+let openStages={}
+
+function toast(msg){
+  const t=document.getElementById('toast')
+  t.textContent=msg;t.classList.add('show')
+  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2200)
+}
+
+function exportJSON(){
+  const blob=new Blob([JSON.stringify(DATA,null,2)],{type:'application/json'})
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob)
+  a.download='lmg-funnel.json';a.click();toast('Exported!')
+}
+
+function saveItem(v,s,f,i,val){DATA[v].stages[s][f][i]=val;toast('Saved')}
+function saveDesc(s,val){DATA[active].stages[s].desc=val;toast('Saved')}
+function saveHdr(val){DATA[active].header.desc=val;toast('Saved')}
+function saveField(sk,field,val){DATA[active].stages[sk][field]=val;toast('Saved')}
+
+function addItem(s,f){
+  DATA[active].stages[s][f].push('New item')
+  renderFunnel()
+  setTimeout(()=>{
+    const els=document.querySelectorAll('#list-'+s+'-'+f+' .editable')
+    if(els.length)els[els.length-1].focus()
+  },40)
+}
+function delItem(s,f,i){DATA[active].stages[s][f].splice(i,1);renderFunnel();setTextContent()}
+
+function toggleStage(key){
+  openStages[key]=!openStages[key]
+  const panel=document.getElementById('det-'+key)
+  if(panel) panel.classList.toggle('open',!!openStages[key])
+  const a=document.getElementById('arr-'+key)
+  if(a) a.textContent=openStages[key]?'collapse':'expand'
+  if(openStages[key]) setTextContent()
+}
+
+function renderTabs(){
+  document.getElementById('tabs').innerHTML=
+    Object.keys(DATA).map(k=>
+      `<button class="tab${k===active?' active':''}" onclick="setView('${k}')">${DATA[k].label}</button>`
+    ).join('')+
+    `<div class="btn-row"><button class="btn" onclick="exportJSON()">Export JSON</button></div>`
+}
+
+function renderHeader(){
+  const el=document.getElementById('view-header')
+  const h=DATA[active].header
+  if(!h){el.style.display='none';return}
+  el.style.display='block'
+  const badges=h.badges.map(b=>`<span class="badge ${b.c}">${b.t}</span>`).join('')
+  el.innerHTML=`<h2>${h.title}</h2>
+    <span id="hdr-desc" contenteditable="true" style="font-size:13px;color:#555;line-height:1.6;outline:none;border-radius:3px;padding:1px 4px;display:inline-block;width:100%">${h.desc}</span>
+    <div class="badges">${badges}</div>`
+  document.getElementById('hdr-desc').addEventListener('blur',function(){saveHdr(this.innerText.trim())})
+}
+
+function renderList(sk,field,items){
+  const rows=items.map((it,i)=>`
+    <div class="list-item">
+      <span class="bullet">•</span>
+      <span class="editable" contenteditable="true" id="item-${sk}-${field}-${i}">${it}</span>
+      <button class="del-btn" onclick="delItem('${sk}','${field}',${i})">X</button>
+    </div>`).join('')
+  return `<div id="list-${sk}-${field}">${rows}
+    <button class="add-btn" onclick="addItem('${sk}','${field}')">+ add</button>
+  </div>`
+}
+
+function attachListeners(){
+  document.querySelectorAll('.editable[id^="item-"]').forEach(el=>{
+    el.addEventListener('blur',function(){
+      const parts=this.id.replace('item-','').split('-')
+      const field=parts.pop()
+      const sk=parts.pop()
+      const i=parseInt(parts.pop())
+      saveItem(active,sk,field,i,this.innerText.trim())
+    })
+    el.addEventListener('keydown',function(e){
+      if(e.key==='Enter'){e.preventDefault();this.blur()}
+    })
+  })
+  document.querySelectorAll('.bar-desc').forEach(el=>{
+    el.addEventListener('blur',function(){saveDesc(this.dataset.key,this.innerText.trim())})
+    el.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();this.blur()}})
+    el.addEventListener('click',function(e){e.stopPropagation()})
+  })
+  const fields=['msg','creative_content','creative_tone','creative_formats']
+  fields.forEach(field=>{
+    STAGES.forEach(s=>{
+      const prefix=field==='msg'?'msg':field==='creative_content'?'cc':field==='creative_tone'?'tone':'fmt'
+      const el=document.getElementById(prefix+'-'+s.key)
+      if(el){
+        el.addEventListener('blur',function(){saveField(s.key,field,this.innerText.trim())})
+        el.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();this.blur()}})
+      }
+    })
+  })
+}
+
+function renderFunnel(){
+  const el=document.getElementById('funnel')
+  const d=DATA[active]
+  el.innerHTML=STAGES.map((s,idx)=>{
+    const st=d.stages[s.key]
+    const isOpen=!!openStages[s.key]
+    return `
+    <div class="funnel-stage-row">
+      <div class="funnel-bar" style="width:${s.w}%;background:${s.color}" onclick="toggleStage('${s.key}')">
+        <div class="bar-inner">
+          <span class="bar-label">${s.label}</span>
+          <span class="bar-desc" data-key="${s.key}">${st.desc}</span>
+          <span class="bar-toggle" id="arr-${s.key}">${isOpen?'collapse':'expand'}</span>
+        </div>
+      </div>
+    </div>
+    ${idx<STAGES.length-1?'<div class="connector"></div>':''}
+    <div class="detail${isOpen?' open':''}" id="det-${s.key}">
+      <div class="detail-grid">
+        <div class="detail-col"><h4>Tactics</h4>${renderList(s.key,'tactics',st.tactics)}</div>
+        <div class="detail-col"><h4>Targeting</h4>${renderList(s.key,'targeting',st.targeting)}</div>
+      </div>
+      <div class="content-blocks">
+        <div class="msg-block" style="border-color:${s.color}">
+          <h4 style="color:${s.color}">Messaging angle</h4>
+          <span class="field-text" id="msg-${s.key}" contenteditable="true"></span>
+        </div>
+        <div class="creative-block">
+          <h4>Content / Creative Angle</h4>
+          <div class="creative-grid">
+            <div class="creative-sub">
+              <h5>What content to use</h5>
+              <span class="field-text" id="cc-${s.key}" contenteditable="true"></span>
+            </div>
+            <div class="creative-sub">
+              <h5>Visual / tone direction</h5>
+              <span class="field-text" id="tone-${s.key}" contenteditable="true"></span>
+            </div>
+            <div class="creative-sub">
+              <h5>Formats</h5>
+              <span class="field-text" id="fmt-${s.key}" contenteditable="true"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`
+  }).join('')
+  attachListeners()
+  setTextContent()
+}
+
+function setTextContent(){
+  const d=DATA[active]
+  STAGES.forEach(s=>{
+    const st=d.stages[s.key]
+    ;[['msg-'+s.key,'msg'],['cc-'+s.key,'creative_content'],['tone-'+s.key,'creative_tone'],['fmt-'+s.key,'creative_formats']].forEach(([id,field])=>{
+      const el=document.getElementById(id)
+      if(el&&document.activeElement!==el) el.textContent=st[field]||''
+    })
+  })
+}
+
+function setView(v){active=v;openStages={};renderTabs();renderHeader();renderFunnel()}
+renderTabs();renderHeader();renderFunnel()
+</script>
+</body>
+</html>
